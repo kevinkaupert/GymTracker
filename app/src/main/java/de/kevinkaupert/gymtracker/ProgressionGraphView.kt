@@ -34,6 +34,9 @@ class ProgressionGraphView @JvmOverloads constructor(
         pathEffect = DashPathEffect(floatArrayOf(10f, 10f), 0f)
     }
 
+    enum class GraphMode { ONE_RM, VOLUME }
+    private var currentMode = GraphMode.ONE_RM
+
     private var sessionData: Map<String, List<Double>> = emptyMap()
     
     private val setColors = intArrayOf(
@@ -45,8 +48,9 @@ class ProgressionGraphView @JvmOverloads constructor(
         Color.parseColor("#22d3ee")  // Cyan
     )
 
-    fun setSessionData(data: Map<String, List<Double>>) {
+    fun setSessionData(data: Map<String, List<Double>>, mode: GraphMode = GraphMode.ONE_RM) {
         this.sessionData = data.toSortedMap()
+        this.currentMode = mode
         invalidate()
     }
 
@@ -63,8 +67,8 @@ class ProgressionGraphView @JvmOverloads constructor(
         val graphHeight = height - paddingTop - paddingBottom
 
         val allValues = sessionData.values.flatten()
-        val minVal = (allValues.minOrNull() ?: 0.0) * 0.9
-        val maxVal = (allValues.maxOrNull() ?: 100.0) * 1.1
+        val minVal = (allValues.minOrNull() ?: 0.0) * 0.8
+        val maxVal = (allValues.maxOrNull() ?: 100.0) * 1.2
         val range = (maxVal - minVal).coerceAtLeast(10.0)
 
         val dates = sessionData.keys.toList()
@@ -84,7 +88,7 @@ class ProgressionGraphView @JvmOverloads constructor(
             val values = sessionData[date] ?: emptyList()
             
             // Draw date label
-            val shortDate = date.substring(5) // MM-DD
+            val shortDate = if (date.length >= 10) date.substring(5) else date // MM-DD
             canvas.drawText(shortDate, x, paddingTop + graphHeight + 60f, textPaint)
 
             values.forEachIndexed { setIndex, value ->

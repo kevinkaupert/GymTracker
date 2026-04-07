@@ -1,127 +1,219 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/surfaceVariant">
+    android:background="@color/background"
+    android:orientation="vertical">
 
-    <androidx.core.widget.NestedScrollView
+    <!-- Content Area -->
+    <FrameLayout
+        android:id="@+id/contentFrame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-        <LinearLayout
+        <!-- Input Screen -->
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/inputScreen"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:layout_height="match_parent"
+            android:visibility="visible">
 
-            <!-- Entry Card -->
-            <com.google.android.material.card.MaterialCardView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="0dp">
+                android:orientation="vertical"
+                android:padding="20dp">
 
-                <LinearLayout
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/exercise_hint"
-                        app:boxStrokeColor="@color/primary"
-                        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.MediumComponent">
-
-                        <AutoCompleteTextView
-                            android:id="@+id/exerciseDropdown"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="text" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_marginBottom="16dp"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="0dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:orientation="horizontal">
+                        android:orientation="vertical"
+                        android:padding="20dp">
 
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                            android:layout_width="0dp"
+                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginEnd="4dp"
-                            android:hint="@string/set_number_hint">
+                            android:hint="@string/exercise_hint">
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/setNumberInput"
+                            <AutoCompleteTextView
+                                android:id="@+id/exerciseDropdown"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="number"
-                                android:text="1" />
+                                android:inputType="text" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                            android:layout_width="0dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:layout_marginHorizontal="4dp"
-                            android:hint="@string/reps_hint">
+                            android:layout_marginTop="12dp"
+                            android:orientation="horizontal">
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/repsInput"
-                                android:layout_width="match_parent"
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:inputType="number" />
+                                android:layout_weight="1"
+                                android:layout_marginEnd="4dp"
+                                android:hint="Satz">
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/setNumberInput"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number"
+                                    android:text="1" />
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                            android:layout_width="0dp"
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginHorizontal="4dp"
+                                android:hint="Wdh.">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/repsInput"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.2"
+                                android:layout_marginStart="4dp"
+                                android:hint="kg">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/weightInput"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="numberDecimal" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1.2"
-                            android:layout_marginStart="4dp"
-                            android:hint="@string/weight_hint">
+                            android:layout_marginTop="16dp"
+                            android:orientation="horizontal">
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/weightInput"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="numberDecimal" />
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/saveButton"
+                                android:layout_width="0dp"
+                                android:layout_height="56dp"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="8dp"
+                                android:text="Speichern"
+                                app:cornerRadius="16dp" />
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/finishButton"
+                                style="@style/Widget.Material3.Button.TonalButton"
+                                android:layout_width="0dp"
+                                android:layout_height="56dp"
+                                android:layout_weight="1"
+                                android:text="Finish"
+                                app:cornerRadius="16dp" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/saveButton"
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="24dp"
+                    app:cardElevation="0dp">
+
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/save_button"
-                        app:cornerRadius="16dp" />
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="20dp">
 
-                </LinearLayout>
+                        <TextView
+                            android:id="@+id/oneRmResult"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1RM: -"
+                            android:textColor="@color/primary"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
 
-            </com.google.android.material.card.MaterialCardView>
+                        <TextView
+                            android:id="@+id/trainingRanges"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:lineSpacingExtra="4dp"
+                            android:text="Bereiche: -"
+                            android:textAppearance="?attr/textAppearanceBodyMedium" />
 
-            <!-- 1RM Info Card -->
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <!-- History Screen -->
+        <LinearLayout
+            android:id="@+id/historyScreen"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Trainings-Historie"
+                android:textAppearance="?attr/textAppearanceTitleLarge"
+                android:textColor="@color/white"
+                android:layout_marginBottom="16dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/historyRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <!-- Analyze Screen -->
+        <LinearLayout
+            android:id="@+id/analyzeScreen"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:visibility="gone">
+
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
                 app:cardCornerRadius="24dp"
                 app:cardElevation="0dp">
 
@@ -130,54 +222,6 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="20dp">
-
-                    <TextView
-                        android:id="@+id/oneRmResult"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="1RM: -"
-                        android:textColor="@color/primary"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/trainingRanges"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:lineSpacingExtra="4dp"
-                        android:text="Bereiche:\nAusdauer (15-30%): -\nKraftausdauer (30-50%): -\nMuskelaufbau (60-80%): -\nIntramusk. Koord. (90-105%): -"
-                        android:textAppearance="?attr/textAppearanceBodyMedium" />
-
-                </LinearLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Graph Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="0dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Fortschritt (1RM pro Tag/Satz)"
-                        android:textAppearance="?attr/textAppearanceTitleMedium"
-                        android:textStyle="bold" />
-
-                    <de.kevinkaupert.gymtracker.ProgressionGraphView
-                        android:id="@+id/progressionGraph"
-                        android:layout_width="match_parent"
-                        android:layout_height="220dp"
-                        android:layout_marginTop="16dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -185,12 +229,41 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/graphTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Analyse: 1RM"
+                            android:textAppearance="?attr/textAppearanceTitleMedium"
+                            android:textStyle="bold" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/toggleGraphMode"
+                            style="@style/Widget.Material3.Button.TextButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Zu Volumen" />
+
+                    </LinearLayout>
+
+                    <de.kevinkaupert.gymtracker.ProgressionGraphView
+                        android:id="@+id/progressionGraph"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:layout_marginTop="16dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="horizontal">
+
+                        <TextView
                             android:id="@+id/sessionStatus"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_gravity="center_vertical"
-                            android:text="@string/session_status_format"
+                            android:text="Status: -"
                             android:textAppearance="?attr/textAppearanceLabelLarge"
                             android:textColor="@color/secondary" />
 
@@ -210,6 +283,16 @@
 
         </LinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </FrameLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface"
+        app:itemIconTint="@color/primary"
+        app:itemTextColor="@color/primary"
+        app:menu="@menu/bottom_nav_menu" />
+
+</LinearLayout>
