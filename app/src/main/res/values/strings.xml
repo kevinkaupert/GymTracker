@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">GymTracker</string>
+    <string name="title">Gym Tracker</string>
+    <string name="exercise_hint">Übung auswählen oder eingeben</string>
+    <string name="set_number_hint">Satz</string>
+    <string name="reps_hint">Reps</string>
+    <string name="weight_hint">Gewicht (kg)</string>
+    <string name="save_button">Speichern</string>
+    <string name="one_rm_format">1RM: %1$.2f kg</string>
+    <string name="last_entry_format">Letzter Eintrag: %1$s, %2$.2f kg x %3$d (1RM: %4$.2f)</string>
+    <string name="session_status_format">Einträge in dieser Session: %1$d</string>
+    <string name="progression_title">Verlauf dieser Übung (1RM):</string>
+    <string name="fill_fields_error">Bitte alle Felder ausfüllen</string>
+    <string name="saved_success">Gespeichert!</string>
+    <string name="no_entry">Keiner</string>
+    <string name="last_entry_label">Letzter Eintrag: %1$s</string>
+</resources>

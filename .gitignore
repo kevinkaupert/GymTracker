@@ -1,0 +1,40 @@
+# Gradle Dateien
+.gradle/
+build/
+/build
+/*/build
+/captures
+
+# IntelliJ/Android Studio Dateien
+.idea/
+*.iml
+.idea/workspace.xml
+.idea/libraries/
+.idea/caches/
+.idea/modules.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+
+# System Dateien
+.DS_Store
+Thumbs.db
+
+# Lokale Konfiguration
+local.properties
+.kotlin/
+
+# Android spezifisch
+*.ap_
+*.dex
+*.class
+bin/
+gen/
+
+# Secrets & Keys
+*.jks
+*.keystore
+google-services.json
+
+# Workout Daten (lokale Tests/Dumps)
+*.json
+!app/src/**/*.json
