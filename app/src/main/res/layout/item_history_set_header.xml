@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingTop="8dp"
+    android:paddingBottom="4dp"
+    android:paddingHorizontal="8dp">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3.5"
+        android:text="Übung"
+        android:textAppearance="?attr/textAppearanceLabelSmall"
+        android:textColor="@color/onSurfaceVariant"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Wdh"
+        android:gravity="end"
+        android:textAppearance="?attr/textAppearanceLabelSmall"
+        android:textColor="@color/onSurfaceVariant"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="Last"
+        android:gravity="end"
+        android:textAppearance="?attr/textAppearanceLabelSmall"
+        android:textColor="@color/onSurfaceVariant"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="1RM"
+        android:gravity="end"
+        android:textAppearance="?attr/textAppearanceLabelSmall"
+        android:textColor="@color/onSurfaceVariant"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="40dp"
+        android:layout_height="0dp" />
+
+</LinearLayout>

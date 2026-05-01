@@ -9,6 +9,7 @@ data class WorkoutSet(
     val reps: Int,
     val weight: Double,
     val oneRm: Double,
+    val isBodyweight: Boolean = false,
     val originFileName: String // Verknüpfung zur Datei für absolut sicheres Löschen/Editieren
 ) {
     val volume: Double get() = reps * weight

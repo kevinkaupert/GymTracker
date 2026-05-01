@@ -18,38 +18,54 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/sessionDate"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="Datum: 2024-03-20"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textColor="@color/primary"
-                android:textStyle="bold" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/sessionDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20. März 2024"
+                    android:textAppearance="?attr/textAppearanceTitleMedium"
+                    android:textColor="@color/onSurface"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/sessionSummary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12 Sätze • 4.250 kg"
+                    android:textAppearance="?attr/textAppearanceLabelSmall"
+                    android:textColor="@color/onSurfaceVariant" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <ImageButton
-                    android:id="@+id/deleteSessionButton"
+                    android:id="@+id/exportSessionButton"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Training löschen"
-                    android:src="@android:drawable/ic_menu_delete"
-                    app:tint="@color/error" />
+                    android:contentDescription="Training exportieren"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_export"
+                    app:tint="@color/primary" />
 
                 <ImageView
                     android:id="@+id/expandArrow"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:padding="12dp"
-                    android:src="@android:drawable/arrow_down_float"
-                    app:tint="@color/secondary" />
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_expand_more"
+                    app:tint="@color/onSurfaceVariant" />
             </LinearLayout>
 
         </RelativeLayout>
