@@ -7,22 +7,27 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 class HistoryAdapter(
     private var sessions: List<WorkoutSession>,
     private val onEditSet: (WorkoutSet) -> Unit,
     private val onDeleteSet: (WorkoutSet) -> Unit,
-    private val onDeleteSession: (WorkoutSession) -> Unit
+    private val onDeleteSession: (WorkoutSession) -> Unit,
+    private val onExportSession: (WorkoutSession) -> Unit
 ) : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
 
-    // Store expanded state by date (unique) instead of position
     private val expandedDates = mutableSetOf<String>()
+    private val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+    private val outputFormat = SimpleDateFormat("EEEE, d. MMM", Locale.getDefault())
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val sessionDate: TextView = view.findViewById(R.id.sessionDate)
+        val sessionSummary: TextView = view.findViewById(R.id.sessionSummary)
         val setsContainer: LinearLayout = view.findViewById(R.id.setsContainer)
-        val deleteSessionButton: ImageButton = view.findViewById(R.id.deleteSessionButton)
+        val exportSessionButton: ImageButton = view.findViewById(R.id.exportSessionButton)
         val expandArrow: View = view.findViewById(R.id.expandArrow)
         val sessionHeader: View = view.findViewById(R.id.sessionHeader)
     }
@@ -35,13 +40,24 @@ class HistoryAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val session = sessions[position]
-        holder.sessionDate.text = "Training: ${session.date}"
+        
+        // Date formatting: 2024-03-20 -> Mittwoch, 20. Mär.
+        val displayDate = try {
+            val date = inputFormat.parse(session.date)
+            if (date != null) outputFormat.format(date) else session.date
+        } catch (e: Exception) {
+            session.date
+        }
+        holder.sessionDate.text = displayDate
+
+        val totalSets = session.sets.size
+        val totalVolume = session.sets.sumOf { it.volume }
+        holder.sessionSummary.text = String.format(Locale.getDefault(), "%d Sätze • %,.0f kg", totalSets, totalVolume)
         
         val isExpanded = expandedDates.contains(session.date)
         holder.setsContainer.visibility = if (isExpanded) View.VISIBLE else View.GONE
         holder.expandArrow.rotation = if (isExpanded) 180f else 0f
 
-        // Clicking the header toggles expansion
         holder.sessionHeader.setOnClickListener {
             if (isExpanded) {
                 expandedDates.remove(session.date)
@@ -51,26 +67,34 @@ class HistoryAdapter(
             notifyItemChanged(position)
         }
 
-        holder.deleteSessionButton.setOnClickListener {
-            onDeleteSession(session)
+        holder.exportSessionButton.setOnClickListener {
+            onExportSession(session)
         }
 
         holder.setsContainer.removeAllViews()
         if (isExpanded) {
+            // Add Header
+            val headerView = LayoutInflater.from(holder.itemView.context)
+                .inflate(R.layout.item_history_set_header, holder.setsContainer, false)
+            holder.setsContainer.addView(headerView)
+
             session.sets.forEach { set ->
                 val setView = LayoutInflater.from(holder.itemView.context)
                     .inflate(R.layout.item_history_set, holder.setsContainer, false)
                 
                 setView.findViewById<TextView>(R.id.exerciseName).text = set.exercise
-                setView.findViewById<TextView>(R.id.setDetails).text = 
-                    "Satz ${set.setNumber}: ${set.reps} x ${set.weight}kg (1RM: ${String.format(Locale.getDefault(), "%.1f", set.oneRm)})"
+                
+                // Neue saubere Aufteilung in Spalten
+                setView.findViewById<TextView>(R.id.repsValue).text = "${set.reps}"
+                
+                val weightDisplay = if (set.isBodyweight) "BW" else String.format(Locale.getDefault(), "%.1fkg", set.weight)
+                setView.findViewById<TextView>(R.id.weightValue).text = weightDisplay
+                
+                setView.findViewById<TextView>(R.id.oneRmValue).text = 
+                    String.format(Locale.getDefault(), "%.1f", set.oneRm)
                 
                 setView.findViewById<ImageButton>(R.id.editSetButton).setOnClickListener {
                     onEditSet(set)
-                }
-                
-                setView.findViewById<ImageButton>(R.id.deleteSetButton).setOnClickListener {
-                    onDeleteSet(set)
                 }
                 
                 holder.setsContainer.addView(setView)
@@ -84,4 +108,6 @@ class HistoryAdapter(
         sessions = newSessions
         notifyDataSetChanged()
     }
+
+    fun getSessionAt(position: Int): WorkoutSession = sessions[position]
 }

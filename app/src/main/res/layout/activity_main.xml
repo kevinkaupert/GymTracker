@@ -57,6 +57,21 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/bodyweightCheckbox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Eigengewicht" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
                             android:orientation="horizontal">
 
                             <com.google.android.material.textfield.TextInputLayout
@@ -168,6 +183,8 @@
                             android:layout_marginTop="12dp"
                             android:lineSpacingExtra="4dp"
                             android:text="Bereiche: -"
+                            android:fontFamily="monospace"
+                            android:textSize="13sp"
                             android:textAppearance="?attr/textAppearanceBodyMedium" />
 
                     </LinearLayout>
@@ -223,28 +240,43 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
-                    <LinearLayout
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_marginBottom="12dp"
+                        android:hint="Übung wählen">
 
-                        <TextView
-                            android:id="@+id/graphTitle"
-                            android:layout_width="0dp"
+                        <AutoCompleteTextView
+                            android:id="@+id/analyzeExerciseDropdown"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Analyse: 1RM"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
-                            android:textStyle="bold" />
+                            android:inputType="none" />
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/toggleGraphMode"
-                            style="@style/Widget.Material3.Button.TextButton"
-                            android:layout_width="wrap_content"
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:hint="Modus">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/analyzeModeDropdown"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Zu Volumen" />
+                            android:inputType="none" />
 
-                    </LinearLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <TextView
+                        android:id="@+id/graphTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Analyse: 1RM"
+                        android:textAppearance="?attr/textAppearanceTitleMedium"
+                        android:textStyle="bold" />
 
                     <de.kevinkaupert.gymtracker.ProgressionGraphView
                         android:id="@+id/progressionGraph"
@@ -252,30 +284,67 @@
                         android:layout_height="250dp"
                         android:layout_marginTop="16dp" />
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/sessionStatus"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        android:orientation="horizontal">
+                        android:text="Status: -"
+                        android:textAppearance="?attr/textAppearanceLabelLarge"
+                        android:textColor="@color/secondary" />
 
-                        <TextView
-                            android:id="@+id/sessionStatus"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Status: -"
-                            android:textAppearance="?attr/textAppearanceLabelLarge"
-                            android:textColor="@color/secondary" />
+                </LinearLayout>
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/exportButton"
-                            style="@style/Widget.Material3.Button.TextButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Export"
-                            app:icon="@android:drawable/ic_menu_share" />
+            </com.google.android.material.card.MaterialCardView>
 
-                    </LinearLayout>
+        </LinearLayout>
+
+        <!-- Settings Screen -->
+        <LinearLayout
+            android:id="@+id/settingsScreen"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Einstellungen"
+                android:textAppearance="?attr/textAppearanceTitleLarge"
+                android:textColor="@color/white"
+                android:layout_marginBottom="24dp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="24dp"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/settingsExportAll"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start|center_vertical"
+                        android:text="Alle Daten exportieren (Backup)"
+                        app:icon="@drawable/ic_export" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/settingsExportToday"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="start|center_vertical"
+                        android:text="Heutiges Training exportieren"
+                        app:icon="@drawable/ic_share" />
 
                 </LinearLayout>
 
