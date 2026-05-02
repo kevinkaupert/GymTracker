@@ -1,52 +1,61 @@
-# GymTracker - Krafttraining & Progress Tracker
+# GymTracker - Strength Training & Progress Tracker
 
-Eine moderne, leichtgewichtige Android-App zur Protokollierung von Krafttraining mit Fokus auf 1RM-Berechnung, Fortschrittsvisualisierung und Datensicherheit durch lokales JSON-Speichermanagement.
+A modern, lightweight Android app for logging strength training with a focus on 1RM calculation, progress visualization, and data security through local JSON storage management.
 
-## 🚀 Features
+## Features
 
-- **1RM-Rechner:** Automatische Berechnung des One-Repetition-Maximums nach der Epley-Formel: `Gewicht * (1 + Wiederholungen / 30)`.
-- **Session-Management:** Jedes Training wird als einzelne JSON-Datei (`workout_YYYY-MM-DD.json`) im internen App-Speicher abgelegt.
-- **Progression Graph:** Eine benutzerdefinierte View (`ProgressionGraphView`), die den Kraftverlauf jeder Übung über die Zeit darstellt. Mehrere Sätze pro Tag werden farblich differenziert.
-- **Trainingszonen:** Sofortige Anzeige der optimalen Gewichtsbereiche für:
-    - Ausdauer (15-30%)
-    - Kraftausdauer (30-50%)
-    - Muskelaufbau/Hypertrophie (60-80%)
-    - Intramuskuläre Koordination (90-105%)
+- **1RM Calculator:** Automatic calculation of the One-Repetition Maximum using the Epley formula: `weight * (1 + reps / 30)`.
+- **Session Management:** Each workout is stored as an individual JSON file (`workout_YYYY-MM-DD.json`) in the internal app storage.
+- **Progression Graph:** A custom view (`ProgressionGraphView`) that displays the strength progression of each exercise over time. Multiple sets per day are color-coded.
+- **Training Zones:** Immediate display of optimal weight ranges for:
+    - Endurance (<50%)
+    - Strength Endurance (50-70%)
+    - Hypertrophy (70-85%)
+    - Maximal Strength (>85%)
 - **Smart UI:**
-    - Automatisches Hochzählen der Satznummern.
-    - Vorschlag der zuletzt verwendeten Übungen.
-    - Validierung gegen doppelte Einträge am selben Tag.
-- **Export-Funktion:** Kombiniert alle einzelnen Session-Dateien zu einem vollständigen Backup-JSON für den externen Datenexport (z.B. WhatsApp, Mail, Cloud).
+    - Automatic incrementing of set numbers.
+    - Suggestions for recently used exercises.
+    - Validation against extreme deviations from previous sessions.
+- **Export Function:** Combines all individual session files into a complete backup JSON for external data export (e.g., WhatsApp, Email, Cloud).
 
-## 🎨 Design
+## Design
 
-Die App nutzt ein modernes **Material 3 Dark Mode** Design:
-- **Primärfarbe:** Action Blue (#4D94FF)
-- **Akzentfarbe:** Success Green (#4ADE80)
-- **Hintergrund:** Deep Charcoal (#121212)
-- **Text:** High-Contrast White für beste Lesbarkeit im Gym.
+The app uses a modern **Material 3 Dark Mode** design (Slate Theme):
+- **Primary Color:** Cyan 500 (#06B6D4)
+- **Secondary Color:** Blue 500 (#3B82F6)
+- **Background:** Slate 900 (#0F172A)
+- **Surface:** Slate 800 (#1E293B)
+- **Text:** Slate 50 (#F8FAFC) for best readability in the gym.
 
-## 🛠 Technische Details
+## Technical Details
 
-- **Sprache:** Kotlin
-- **UI:** XML mit Material Design 3
-- **Speicherung:** `org.json` für lokale Datenverarbeitung
-- **Sharing:** `androidx.core.content.FileProvider` für sicheren Datei-Export
-- **Grafik:** Custom View Drawing API für die Progression-Anzeige
+- **Language:** Kotlin
+- **UI:** XML with Material Design 3
+- **Storage:** `org.json` for local data processing
+- **Sharing:** `androidx.core.content.FileProvider` for secure file export
+- **Graphics:** Custom View Drawing API for the progression display
 
-## 📂 Datenstruktur (JSON)
-Jeder Eintrag folgt diesem Schema:
+## Data Structure (JSON)
+Each entry follows this schema:
 ```json
 {
-    "tag": "2023-10-27",
+    "id": "1710945600000",
+    "tag": "2024-03-20",
     "uhrzeit": "15:30:00",
-    "übung": "Bankdrücken",
+    "übung": "Bench Press",
     "satz": "1",
     "wiederholungen": 10,
     "gewicht": 80.0,
-    "1RM": 106.67
+    "1RM": 106.67,
+    "isBodyweight": false
 }
 ```
 
 ---
-Entwickelt für maximale Fokuszeit im Training. Keine Cloud, kein Abo, nur Daten.
+Developed for maximum focus during training. No cloud, no subscription, just data.
+
+## About & AI Development
+
+This application was developed significantly using **AI-assisted coding**. It serves primarily as a **robust foundation** for derivative projects or as a template that can be easily **adapted to individual training requirements**. 
+
+Whether you want to extend the data analysis, add a cloud sync, or build a completely different logging tool, the clean JSON-based structure and modular Kotlin code provide an ideal starting point for further development.

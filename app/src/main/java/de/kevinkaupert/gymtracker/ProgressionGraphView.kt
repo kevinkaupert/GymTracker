@@ -137,7 +137,12 @@ class ProgressionGraphView @JvmOverloads constructor(
             Triple(0.7, 0.85, Color.parseColor("#1E3A8A")), // Hypertrophie (Blue 900)
             Triple(0.85, 1.1, Color.parseColor("#1D4ED8"))  // Maximalkraft (Blue 700)
         )
-        val zoneLabels = listOf("Ausdauer", "Kraftausdauer", "Hypertrophie", "Max-Kraft")
+        val zoneLabels = listOf(
+            context.getString(R.string.graph_zone_endurance),
+            context.getString(R.string.graph_zone_strength_endurance),
+            context.getString(R.string.graph_zone_hypertrophy),
+            context.getString(R.string.graph_zone_maximal)
+        )
 
         zoneConfigs.forEachIndexed { zoneIndex, config ->
             val path = android.graphics.Path()

@@ -1,18 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">GymTracker</string>
-    <string name="exercise_hint">Übung (z.B. Bankdrücken)</string>
-    <string name="set_number_hint">Satz</string>
-    <string name="reps_hint">Wdh.</string>
+    <string name="exercise_hint">Exercise (e.g., Bench Press)</string>
+    <string name="set_number_hint">Set</string>
+    <string name="reps_hint">Reps</string>
     <string name="weight_hint">kg</string>
-    <string name="save_button">Speichern</string>
-    <string name="fill_fields_error">Bitte alle Felder ausfüllen!</string>
-    <string name="saved_success">Gespeichert!</string>
+    <string name="save_button">Save</string>
+    <string name="fill_fields_error">Please fill in all fields!</string>
+    <string name="saved_success">Saved!</string>
     <string name="one_rm_format">1RM: %.2f kg</string>
-    <string name="session_status_format">Gesamt: %d Sätze</string>
+    <string name="session_status_format">Total: %d Sets</string>
 
-    <string name="nav_input">Eingabe</string>
-    <string name="nav_history">Verlauf</string>
-    <string name="nav_analyze">Analyse</string>
-    <string name="nav_settings">Einstellungen</string>
+    <string name="session_summary_format">%1$d Sets • %2$,.0f kg</string>
+    <string name="bodyweight_short">BW</string>
+    <string name="unit_kg_short">kg</string>
+
+    <string name="nav_input">Input</string>
+    <string name="nav_history">History</string>
+    <string name="nav_analyze">Analyze</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Additional Strings for Dialogs and UI -->
+    <string name="bodyweight_label">Bodyweight</string>
+    <string name="finish_button">Finish</string>
+    <string name="one_rm_basis">1RM Basis: -</string>
+    <string name="ranges_basis">Ranges: -</string>
+
+    <string name="dialog_finish_title">Finish Workout?</string>
+    <string name="dialog_finish_message">Clear all fields?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string name="history_title">Workout History</string>
+    <string name="analyze_title">Analysis</string>
+    <string name="settings_title">Settings</string>
+
+    <string name="mode_hint">Mode</string>
+    <string name="mode_1rm">1RM</string>
+    <string name="mode_volume">Volume</string>
+    <string name="graph_title_format">%1$s: %2$s (%3$s)</string>
+
+    <string name="export_all_btn">Export all data (Backup)</string>
+    <string name="export_today_btn">Export today\'s workout</string>
+
+    <string name="deviation_title">Large Deviation</string>
+    <string name="deviation_message">This set (%.1f %s) deviates significantly from your last training (%.1f %s). Save anyway?</string>
+    <string name="unit_reps_bw">Reps (BW)</string>
+    <string name="unit_kg_1rm">kg (1RM)</string>
+
+    <string name="delete_session_title">Delete Workout?</string>
+    <string name="delete_session_message">Do you really want to delete the entire workout from %s?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="delete_set_title">Delete Set?</string>
+    <string name="delete_set_message">Do you really want to delete this set?</string>
+
+    <string name="edit_set_title">Edit Set</string>
+
+    <string name="training_ranges_title">Training Ranges (Basis 1RM):</string>
+    <string name="range_endurance">Endurance (&lt;50%):</string>
+    <string name="range_strength_endurance">Strength Endur. (50-70%):</string>
+    <string name="range_hypertrophy">Hypertrophy (70-85%):</string>
+    <string name="range_maximal">Maximal (&gt;85%):</string>
+
+    <string name="graph_zone_endurance">Endurance</string>
+    <string name="graph_zone_strength_endurance">Stren. Endur.</string>
+    <string name="graph_zone_hypertrophy">Hypertrophy</string>
+    <string name="graph_zone_maximal">Maximal</string>
+
+    <string name="database_status">Database: %1$d sets in %2$d sessions</string>
+    <string name="no_data_today">No data for today</string>
+    <string name="no_data_export">No data available to export</string>
+    <string name="backup_filename">GymTracker Backup</string>
+    <string name="unknown_exercise">Unknown Exercise</string>
+    <string name="header_exercise">Exercise</string>
+    <string name="header_reps">Reps</string>
+    <string name="header_weight">Weight</string>
+    <string name="header_1rm">1RM</string>
+    <string name="desc_edit_set">Edit set</string>
+    <string name="desc_export_session">Export session</string>
+
+    <string name="last_1rm">Last 1RM: %.2f kg</string>
+    <string name="last_basis_wdh">Last Basis (Reps): %.1f</string>
+    <string name="current_1rm">1RM: %.2f kg</string>
+    <string name="current_basis_wdh">Basis (Reps): %.1f</string>
 </resources>
