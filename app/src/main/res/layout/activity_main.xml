@@ -64,7 +64,7 @@
                                 android:id="@+id/bodyweightCheckbox"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Eigengewicht" />
+                                android:text="@string/bodyweight_label" />
 
                         </LinearLayout>
 
@@ -80,7 +80,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:layout_marginEnd="4dp"
-                                android:hint="Satz">
+                                android:hint="@string/set_number_hint">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/setNumberInput"
@@ -97,7 +97,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:layout_marginHorizontal="4dp"
-                                android:hint="Wdh.">
+                                android:hint="@string/reps_hint">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/repsInput"
@@ -113,7 +113,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1.2"
                                 android:layout_marginStart="4dp"
-                                android:hint="kg">
+                                android:hint="@string/weight_hint">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/weightInput"
@@ -137,7 +137,7 @@
                                 android:layout_height="56dp"
                                 android:layout_weight="1"
                                 android:layout_marginEnd="8dp"
-                                android:text="Speichern"
+                                android:text="@string/save_button"
                                 app:cornerRadius="16dp" />
 
                             <com.google.android.material.button.MaterialButton
@@ -146,7 +146,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="56dp"
                                 android:layout_weight="1"
-                                android:text="Finish"
+                                android:text="@string/finish_button"
                                 app:cornerRadius="16dp" />
 
                         </LinearLayout>
@@ -171,7 +171,7 @@
                             android:id="@+id/oneRmResult"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="1RM: -"
+                            android:text="@string/one_rm_basis"
                             android:textColor="@color/primary"
                             android:textSize="22sp"
                             android:textStyle="bold" />
@@ -182,7 +182,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="12dp"
                             android:lineSpacingExtra="4dp"
-                            android:text="Bereiche: -"
+                            android:text="@string/ranges_basis"
                             android:fontFamily="monospace"
                             android:textSize="13sp"
                             android:textAppearance="?attr/textAppearanceBodyMedium" />
@@ -206,7 +206,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Trainings-Historie"
+                android:text="@string/history_title"
                 android:textAppearance="?attr/textAppearanceTitleLarge"
                 android:textColor="@color/white"
                 android:layout_marginBottom="16dp" />
@@ -245,7 +245,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        android:hint="Übung wählen">
+                        android:hint="@string/exercise_hint">
 
                         <AutoCompleteTextView
                             android:id="@+id/analyzeExerciseDropdown"
@@ -260,7 +260,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:hint="Modus">
+                        android:hint="@string/mode_hint">
 
                         <AutoCompleteTextView
                             android:id="@+id/analyzeModeDropdown"
@@ -274,7 +274,7 @@
                         android:id="@+id/graphTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Analyse: 1RM"
+                        android:text="@string/analyze_title"
                         android:textAppearance="?attr/textAppearanceTitleMedium"
                         android:textStyle="bold" />
 
@@ -311,7 +311,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Einstellungen"
+                android:text="@string/settings_title"
                 android:textAppearance="?attr/textAppearanceTitleLarge"
                 android:textColor="@color/white"
                 android:layout_marginBottom="24dp" />
@@ -334,7 +334,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="start|center_vertical"
-                        android:text="Alle Daten exportieren (Backup)"
+                        android:text="@string/export_all_btn"
                         app:icon="@drawable/ic_export" />
 
                     <com.google.android.material.button.MaterialButton
@@ -343,7 +343,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="start|center_vertical"
-                        android:text="Heutiges Training exportieren"
+                        android:text="@string/export_today_btn"
                         app:icon="@drawable/ic_share" />
 
                 </LinearLayout>

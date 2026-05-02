@@ -239,7 +239,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupAnalyzeScreen() {
-        val modes = listOf("1RM", "Volumen")
+        val modes = listOf(getString(R.string.mode_1rm), getString(R.string.mode_volume))
         val modeAdapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, modes)
         analyzeModeDropdown.setAdapter(modeAdapter)
         
@@ -263,7 +263,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun refreshAnalyzeView() {
         val exercise = analyzeExerciseDropdown.text.toString()
-        graphTitle.text = if (graphMode == ProgressionGraphView.GraphMode.ONE_RM) "Analyse: 1RM ($exercise)" else "Analyse: Volumen ($exercise)"
+        val modeLabel = if (graphMode == ProgressionGraphView.GraphMode.ONE_RM) getString(R.string.mode_1rm) else getString(R.string.mode_volume)
+        graphTitle.text = getString(R.string.graph_title_format, getString(R.string.analyze_title), modeLabel, exercise)
         updateProgressionView(exercise)
         updateSessionStatus()
     }
@@ -288,7 +289,7 @@ class MainActivity : AppCompatActivity() {
                         id = id,
                         date = obj.optString("tag", dateFromFilename),
                         time = obj.optString("uhrzeit", "--:--"),
-                        exercise = obj.optString("übung", "Unbekannte Übung"),
+                        exercise = obj.optString("übung", getString(R.string.unknown_exercise)),
                         setNumber = obj.optString("satz", "0"),
                         reps = obj.optInt("wiederholungen", 0),
                         weight = obj.optDouble("gewicht", 0.0),
@@ -315,7 +316,7 @@ class MainActivity : AppCompatActivity() {
         val isBodyweight = bodyweightCheckbox.isChecked
 
         if (exercise.isEmpty() || setNumberStr.isEmpty() || repsStr.isEmpty() || (weightStr.isEmpty() && !isBodyweight)) {
-            Toast.makeText(this, "Bitte alle Felder ausfüllen!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.fill_fields_error, Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -329,16 +330,14 @@ class MainActivity : AppCompatActivity() {
             
             // If the BW status changed, a deviation is expected, but we still warn if it's huge
             if (deviation > 0.5) {
-                val unit = if (isBodyweight) "Wdh (BW)" else "kg (1RM)"
-                val refUnit = if (lastRefIsBodyweight) "Wdh (BW)" else "kg (1RM)"
+                val unit = if (isBodyweight) getString(R.string.unit_reps_bw) else getString(R.string.unit_kg_1rm)
+                val refUnit = if (lastRefIsBodyweight) getString(R.string.unit_reps_bw) else getString(R.string.unit_kg_1rm)
                 
                 MaterialAlertDialogBuilder(this)
-                    .setTitle("Starke Abweichung")
-                    .setMessage(String.format(Locale.getDefault(), 
-                        "Dieser Satz (%.1f %s) weicht stark von deinem letzten Training (%.1f %s) ab. Speichern?",
-                        currentOneRm, unit, lastRefOneRm, refUnit))
-                    .setPositiveButton("Speichern") { _, _ -> performSave(exercise, setNumberStr, reps, weight, isBodyweight) }
-                    .setNegativeButton("Abbrechen", null)
+                    .setTitle(R.string.deviation_title)
+                    .setMessage(getString(R.string.deviation_message, currentOneRm, unit, lastRefOneRm, refUnit))
+                    .setPositiveButton(R.string.save_button) { _, _ -> performSave(exercise, setNumberStr, reps, weight, isBodyweight) }
+                    .setNegativeButton(R.string.cancel, null)
                     .show()
                 return
             }
@@ -371,29 +370,29 @@ class MainActivity : AppCompatActivity() {
         repsInput.text?.clear()
         
         oneRmResult.text = if (isBodyweight) 
-            String.format(Locale.getDefault(), "Basis (Wdh): %.1f", oneRm)
+            getString(R.string.current_basis_wdh, oneRm)
         else 
-            String.format(Locale.getDefault(), "1RM: %.2f kg", oneRm)
+            getString(R.string.current_1rm, oneRm)
             
         updateTrainingRanges(oneRm, isBodyweight)
         updateSessionStatus()
         updateExerciseAdapters()
-        Toast.makeText(this, "Gespeichert!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, R.string.saved_success, Toast.LENGTH_SHORT).show()
     }
 
     private fun exportSession(session: WorkoutSession) {
         val file = File(filesDir, session.fileName)
         if (file.exists()) {
-            shareFile(file, "Training vom ${session.date}")
+            shareFile(file, "Workout from ${session.date}")
         }
     }
 
     private fun confirmDeleteSession(session: WorkoutSession) {
         MaterialAlertDialogBuilder(this)
-            .setTitle("Training löschen?")
-            .setMessage("Möchtest du das gesamte Training vom ${session.date} wirklich löschen?")
-            .setPositiveButton("Löschen") { _, _ -> deleteSession(session) }
-            .setNegativeButton("Abbrechen", null)
+            .setTitle(R.string.delete_session_title)
+            .setMessage(getString(R.string.delete_session_message, session.date))
+            .setPositiveButton(R.string.delete) { _, _ -> deleteSession(session) }
+            .setNegativeButton(R.string.cancel, null)
             .show()
     }
 
@@ -403,16 +402,16 @@ class MainActivity : AppCompatActivity() {
             loadHistory()
             updateSessionStatus()
             refreshAnalyzeView()
-            Toast.makeText(this, "Training gelöscht", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.saved_success), Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun confirmDeleteSet(set: WorkoutSet) {
         MaterialAlertDialogBuilder(this)
-            .setTitle("Satz löschen?")
-            .setMessage("Möchtest du diesen Satz wirklich löschen?")
-            .setPositiveButton("Löschen") { _, _ -> deleteSet(set) }
-            .setNegativeButton("Abbrechen", null)
+            .setTitle(R.string.delete_set_title)
+            .setMessage(R.string.delete_set_message)
+            .setPositiveButton(R.string.delete) { _, _ -> deleteSet(set) }
+            .setNegativeButton(R.string.cancel, null)
             .show()
     }
 
@@ -433,7 +432,7 @@ class MainActivity : AppCompatActivity() {
                 loadHistory()
                 updateSessionStatus()
                 refreshAnalyzeView()
-                Toast.makeText(this, "Satz gelöscht", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.saved_success), Toast.LENGTH_SHORT).show()
             }
         } catch (_: Exception) {}
     }
@@ -455,15 +454,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         MaterialAlertDialogBuilder(this)
-            .setTitle("Satz bearbeiten")
+            .setTitle(R.string.edit_set_title)
             .setView(dialogView)
-            .setPositiveButton("Speichern") { _, _ ->
+            .setPositiveButton(R.string.save_button) { _, _ ->
                 val r = editReps.text.toString().toIntOrNull() ?: set.reps
                 val isBW = editIsBodyweight.isChecked
                 val w = if (isBW) 0.0 else (editWeight.text.toString().toDoubleOrNull() ?: set.weight)
                 updateSetInFile(set, r, w, isBW)
             }
-            .setNegativeButton("Abbrechen", null).show()
+            .setNegativeButton(R.string.cancel, null).show()
     }
 
     private fun updateSetInFile(set: WorkoutSet, newReps: Int, newWeight: Double, isBodyweight: Boolean) {
@@ -580,16 +579,16 @@ class MainActivity : AppCompatActivity() {
             
             // Update 1RM display with the LAST value as reference
             oneRmResult.text = if (lastRefIsBodyweight) 
-                String.format(Locale.getDefault(), "Letzte Basis (Wdh): %.1f", lastRefOneRm)
+                getString(R.string.last_basis_wdh, lastRefOneRm)
             else 
-                String.format(Locale.getDefault(), "Letztes 1RM: %.2f kg", lastRefOneRm)
+                getString(R.string.last_1rm, lastRefOneRm)
             
             updateTrainingRanges(lastRefOneRm, lastRefIsBodyweight)
         } else {
             // Defaults if exercise is new or unknown
             // Note: We don't necessarily want to clear weight if the user is just typing
-            oneRmResult.text = "1RM: -"
-            trainingRanges.text = "Bereiche: -"
+            oneRmResult.text = getString(R.string.one_rm_basis)
+            trainingRanges.text = getString(R.string.ranges_basis)
         }
     }
 
@@ -612,15 +611,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateTrainingRanges(oneRm: Double, isBodyweight: Boolean = false) {
-        val unit = if (isBodyweight) "Wdh" else "kg"
+        val unit = if (isBodyweight) "Reps" else "kg"
         val f = Locale.getDefault()
         
-        val line1 = String.format(f, "%-24s ~%6.1f %s", "Ausdauer (<50%):", oneRm * 0.45, unit)
-        val line2 = String.format(f, "%-24s ~%6.1f %s", "Kraftausdauer (50-70%):", oneRm * 0.60, unit)
-        val line3 = String.format(f, "%-24s ~%6.1f %s", "Hypertrophie (70-85%):", oneRm * 0.75, unit)
-        val line4 = String.format(f, "%-24s ~%6.1f %s", "Maximal (>85%):", oneRm * 0.95, unit)
+        // Increased field width to 28 for labels and 7.1 for weights to ensure perfect alignment
+        val line1 = String.format(f, "%-28s ~%7.1f %s", getString(R.string.range_endurance), oneRm * 0.45, unit)
+        val line2 = String.format(f, "%-28s ~%7.1f %s", getString(R.string.range_strength_endurance), oneRm * 0.60, unit)
+        val line3 = String.format(f, "%-28s ~%7.1f %s", getString(R.string.range_hypertrophy), oneRm * 0.75, unit)
+        val line4 = String.format(f, "%-28s ~%7.1f %s", getString(R.string.range_maximal), oneRm * 0.95, unit)
 
-        trainingRanges.text = "Trainingsbereiche (Basis 1RM):\n$line1\n$line2\n$line3\n$line4"
+        trainingRanges.text = "${getString(R.string.training_ranges_title)}\n$line1\n$line2\n$line3\n$line4"
     }
 
     private fun saveToJsonFile(entry: JSONObject) {
@@ -632,13 +632,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun exportTodayOnly() {
         val file = File(filesDir, getTodayFileName())
-        if (file.exists()) shareFile(file, "Heute") else Toast.makeText(this, "Keine Daten für heute", Toast.LENGTH_SHORT).show()
+        if (file.exists()) shareFile(file, "Today") else Toast.makeText(this, R.string.no_data_today, Toast.LENGTH_SHORT).show()
     }
 
     private fun exportAllData() {
         val files = filesDir.listFiles { _, name -> name.startsWith("workout_") }
         if (files.isNullOrEmpty()) {
-            Toast.makeText(this, "Keine Daten zum Exportieren vorhanden", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.no_data_export, Toast.LENGTH_SHORT).show()
             return
         }
         val all = JSONArray()
@@ -650,7 +650,7 @@ class MainActivity : AppCompatActivity() {
         }
         val f = File(cacheDir, "gymtracker_backup.json")
         f.writeText(all.toString(4))
-        shareFile(f, "Gesamter Verlauf")
+        shareFile(f, getString(R.string.backup_filename))
     }
 
     private fun shareFile(f: File, t: String) {
@@ -664,16 +664,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun finishWorkout() {
-        MaterialAlertDialogBuilder(this).setTitle("Beenden?").setMessage("Alle Felder leeren?").setPositiveButton("Ja") { _, _ ->
+        MaterialAlertDialogBuilder(this).setTitle(R.string.dialog_finish_title).setMessage(R.string.dialog_finish_message).setPositiveButton(R.string.yes) { _, _ ->
             exerciseDropdown.text.clear()
             repsInput.text?.clear()
             weightInput.text?.clear()
             setNumberInput.setText("1")
-            oneRmResult.text = "1RM: -"
-            trainingRanges.text = "Bereiche: -"
+            oneRmResult.text = getString(R.string.one_rm_basis)
+            trainingRanges.text = getString(R.string.ranges_basis)
             bodyweightCheckbox.isChecked = false
             updateSessionStatus()
-        }.setNegativeButton("Nein", null).show()
+        }.setNegativeButton(R.string.no, null).show()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -686,6 +686,6 @@ class MainActivity : AppCompatActivity() {
         val files = filesDir.listFiles { _, name -> name.startsWith("workout_") }
         var total = 0
         files?.forEach { try { total += JSONArray(it.readText()).length() } catch(e: Exception) {} }
-        sessionStatus.text = "Datenbank: $total Sätze in ${files?.size ?: 0} Sessions"
+        sessionStatus.text = getString(R.string.database_status, total, files?.size ?: 0)
     }
 }

@@ -22,6 +22,10 @@
         <item name="colorOnSurfaceVariant">@color/onSurfaceVariant</item>
 
         <item name="colorOutline">@color/outline</item>
+
+        <!-- App-wide Font -->
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="Theme.GymTracker" parent="Base.Theme.GymTracker" />

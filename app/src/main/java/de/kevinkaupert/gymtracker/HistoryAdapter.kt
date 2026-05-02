@@ -52,7 +52,8 @@ class HistoryAdapter(
 
         val totalSets = session.sets.size
         val totalVolume = session.sets.sumOf { it.volume }
-        holder.sessionSummary.text = String.format(Locale.getDefault(), "%d Sätze • %,.0f kg", totalSets, totalVolume)
+        val context = holder.itemView.context
+        holder.sessionSummary.text = context.getString(R.string.session_summary_format, totalSets, totalVolume)
         
         val isExpanded = expandedDates.contains(session.date)
         holder.setsContainer.visibility = if (isExpanded) View.VISIBLE else View.GONE
@@ -87,7 +88,8 @@ class HistoryAdapter(
                 // Neue saubere Aufteilung in Spalten
                 setView.findViewById<TextView>(R.id.repsValue).text = "${set.reps}"
                 
-                val weightDisplay = if (set.isBodyweight) "BW" else String.format(Locale.getDefault(), "%.1fkg", set.weight)
+                val context = holder.itemView.context
+                val weightDisplay = if (set.isBodyweight) context.getString(R.string.bodyweight_short) else String.format(Locale.getDefault(), "%.1f%s", set.weight, context.getString(R.string.unit_kg_short))
                 setView.findViewById<TextView>(R.id.weightValue).text = weightDisplay
                 
                 setView.findViewById<TextView>(R.id.oneRmValue).text = 

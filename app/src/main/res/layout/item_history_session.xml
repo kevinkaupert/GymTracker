@@ -54,7 +54,7 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="Training exportieren"
+                    android:contentDescription="@string/desc_export_session"
                     android:padding="12dp"
                     android:src="@drawable/ic_export"
                     app:tint="@color/primary" />

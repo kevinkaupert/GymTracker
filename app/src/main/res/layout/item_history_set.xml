@@ -56,7 +56,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="Bearbeiten"
+        android:contentDescription="@string/desc_edit_set"
         android:src="@drawable/ic_edit"
         android:padding="8dp"
         android:tint="@color/primary" />
