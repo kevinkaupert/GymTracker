@@ -5,6 +5,10 @@
         android:icon="@drawable/ic_nav_input"
         android:title="@string/nav_input" />
     <item
+        android:id="@+id/nav_exercises"
+        android:icon="@drawable/ic_nav_history"
+        android:title="@string/nav_exercises" />
+    <item
         android:id="@+id/nav_history"
         android:icon="@drawable/ic_nav_history"
         android:title="@string/nav_history" />
