@@ -36,7 +36,9 @@ data class WorkoutSet(
     val oneRm: Double = 0.0,
     val isBodyweight: Boolean = false,
     val isTimed: Boolean = false,
-    val originFileName: String = ""
+    val originFileName: String = "",
+    val isSeconds: Boolean = false,
+    val comment: String = ""
 ) {
     val volume: Double
         get() = if (isTimed) (weightKg ?: 0.0) * (durationSeconds ?: 0)
@@ -66,5 +68,6 @@ data class WorkoutSession(
     val fileName: String, // Keeping this for internal tracking if needed
     // Legacy support fields
     val sets: List<WorkoutSet> = emptyList(),
-    val note: String = ""
+    val note: String = "",
+    val comment: String = ""
 )

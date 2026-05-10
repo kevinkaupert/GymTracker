@@ -27,6 +27,7 @@ class HistoryAdapter(
         val sessionDate: TextView = view.findViewById(R.id.sessionDate)
         val sessionSummary: TextView = view.findViewById(R.id.sessionSummary)
         val sessionNote: TextView = view.findViewById(R.id.sessionNote)
+        val sessionComment: TextView = view.findViewById(R.id.sessionComment)
         val setsContainer: LinearLayout = view.findViewById(R.id.setsContainer)
         val exportSessionButton: ImageButton = view.findViewById(R.id.exportSessionButton)
         val expandArrow: View = view.findViewById(R.id.expandArrow)
@@ -62,6 +63,13 @@ class HistoryAdapter(
         } else {
             holder.sessionNote.visibility = View.GONE
         }
+
+        if (session.comment.isNotEmpty()) {
+            holder.sessionComment.text = session.comment
+            holder.sessionComment.visibility = View.VISIBLE
+        } else {
+            holder.sessionComment.visibility = View.GONE
+        }
         
         val isExpanded = expandedDates.contains(session.date)
         holder.setsContainer.visibility = if (isExpanded) View.VISIBLE else View.GONE
@@ -93,9 +101,13 @@ class HistoryAdapter(
                 
                 setView.findViewById<TextView>(R.id.exerciseName).text = set.exercise
                 
-                // Show "s" for timed exercises
+                // Show "s" for timed/seconds exercises
                 val reps = if (set.isTimed) set.durationSeconds else set.reps
-                val repsText = if (set.isTimed) "${reps}${context.getString(R.string.time_hint)}" else "${reps}"
+                val repsText = when {
+                    set.isSeconds -> "${reps}s"
+                    set.isTimed -> "${reps}${context.getString(R.string.time_hint)}"
+                    else -> "${reps}"
+                }
                 setView.findViewById<TextView>(R.id.repsValue).text = repsText
                 
                 val weight = set.weightKg ?: 0.0
@@ -105,10 +117,18 @@ class HistoryAdapter(
                 setView.findViewById<TextView>(R.id.oneRmValue).text = 
                     String.format(Locale.getDefault(), "%.1f", set.oneRm)
                 
+                val commentView = setView.findViewById<TextView>(R.id.setComment)
+                if (set.comment.isNotEmpty()) {
+                    commentView.text = set.comment
+                    commentView.visibility = View.VISIBLE
+                } else {
+                    commentView.visibility = View.GONE
+                }
+
                 setView.findViewById<ImageButton>(R.id.editSetButton).setOnClickListener {
                     onEditSet(set)
                 }
-                
+
                 holder.setsContainer.addView(setView)
             }
         }
