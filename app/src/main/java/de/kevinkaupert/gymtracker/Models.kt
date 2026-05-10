@@ -9,7 +9,9 @@ data class WorkoutSet(
     val reps: Int,
     val weight: Double,
     val oneRm: Double,
-    val originFileName: String // Verknüpfung zur Datei für absolut sicheres Löschen/Editieren
+    val originFileName: String, // Verknüpfung zur Datei für absolut sicheres Löschen/Editieren
+    val isSeconds: Boolean = false,
+    val comment: String = ""
 ) {
     val volume: Double get() = reps * weight
 }
@@ -17,5 +19,6 @@ data class WorkoutSet(
 data class WorkoutSession(
     val date: String,
     val fileName: String,
-    val sets: List<WorkoutSet>
+    val sets: List<WorkoutSet>,
+    val comment: String = ""
 )

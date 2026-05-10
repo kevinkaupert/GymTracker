@@ -34,6 +34,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var setNumberInput: TextInputEditText
     private lateinit var repsInput: TextInputEditText
     private lateinit var weightInput: TextInputEditText
+    private lateinit var setCommentInput: TextInputEditText
+    private lateinit var sessionCommentInput: TextInputEditText
+    private lateinit var secondsToggle: com.google.android.material.checkbox.MaterialCheckBox
+    private lateinit var repsInputLayout: com.google.android.material.textfield.TextInputLayout
     private lateinit var saveButton: MaterialButton
     private lateinit var finishButton: MaterialButton
     private lateinit var exportButton: MaterialButton
@@ -74,6 +78,10 @@ class MainActivity : AppCompatActivity() {
         setNumberInput = findViewById(R.id.setNumberInput)
         repsInput = findViewById(R.id.repsInput)
         weightInput = findViewById(R.id.weightInput)
+        setCommentInput = findViewById(R.id.setCommentInput)
+        sessionCommentInput = findViewById(R.id.sessionCommentInput)
+        secondsToggle = findViewById(R.id.secondsToggle)
+        repsInputLayout = findViewById(R.id.repsInputLayout)
         saveButton = findViewById(R.id.saveButton)
         finishButton = findViewById(R.id.finishButton)
         exportButton = findViewById(R.id.exportButton)
@@ -101,17 +109,24 @@ class MainActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {
                 val exercise = s.toString()
                 updateSetNumberForExercise(exercise)
+                updateWeightForExercise(exercise)
                 updateProgressionView(exercise)
             }
         })
+
+        secondsToggle.setOnCheckedChangeListener { _, isChecked ->
+            repsInputLayout.hint = if (isChecked) "Sek." else "Wdh."
+        }
 
         saveButton.setOnClickListener { saveEntry() }
         finishButton.setOnClickListener { finishWorkout() }
         exportButton.setOnClickListener { exportJson() }
 
         exerciseDropdown.setOnItemClickListener { _, _, _, _ ->
-            updateSetNumberForExercise(exerciseDropdown.text.toString())
-            updateProgressionView(exerciseDropdown.text.toString())
+            val exercise = exerciseDropdown.text.toString()
+            updateSetNumberForExercise(exercise)
+            updateWeightForExercise(exercise)
+            updateProgressionView(exercise)
         }
 
         updateSessionStatus()
@@ -157,10 +172,17 @@ class MainActivity : AppCompatActivity() {
                 if (jsonText.isBlank()) return@forEach
                 val jsonArray = JSONArray(jsonText)
                 val sets = mutableListOf<WorkoutSet>()
+                var sessionComment = ""
                 val dateFromFilename = file.name.removePrefix("workout_").removeSuffix(".json")
 
                 for (i in 0 until jsonArray.length()) {
                     val obj = jsonArray.getJSONObject(i)
+                    
+                    // Session-Kommentar aus dem ersten Eintrag oder einem speziellen Feld lesen
+                    if (obj.has("session_kommentar") && sessionComment.isEmpty()) {
+                        sessionComment = obj.getString("session_kommentar")
+                    }
+
                     // ID-Logik: Priorität auf gespeicherte ID, Fallback auf Tag_Uhrzeit
                     val id = if (obj.has("id")) {
                         obj.getString("id")
@@ -177,13 +199,15 @@ class MainActivity : AppCompatActivity() {
                         reps = obj.optInt("wiederholungen", 0),
                         weight = obj.optDouble("gewicht", 0.0),
                         oneRm = obj.optDouble("1RM", 0.0),
-                        originFileName = file.name
+                        originFileName = file.name,
+                        isSeconds = obj.optBoolean("is_seconds", false),
+                        comment = obj.optString("kommentar", "")
                     ))
                 }
                 if (sets.isNotEmpty()) {
                     // Sätze innerhalb einer Session nach Uhrzeit sortieren
                     sets.sortBy { it.time }
-                    sessions.add(WorkoutSession(sets[0].date, file.name, sets))
+                    sessions.add(WorkoutSession(sets[0].date, file.name, sets, sessionComment))
                 } else if (file.length() == 0L) {
                     file.delete()
                 }
@@ -192,6 +216,20 @@ class MainActivity : AppCompatActivity() {
             }
         }
         historyAdapter.updateData(sessions)
+        
+        // Aktuellen Session-Kommentar in das Input-Feld laden, falls Datei für heute existiert
+        val todayFile = File(filesDir, getTodayFileName())
+        if (todayFile.exists()) {
+            try {
+                val arr = JSONArray(todayFile.readText())
+                if (arr.length() > 0) {
+                    val first = arr.getJSONObject(0)
+                    if (first.has("session_kommentar")) {
+                        sessionCommentInput.setText(first.getString("session_kommentar"))
+                    }
+                }
+            } catch (e: Exception) {}
+        }
     }
 
     private fun saveEntry() {
@@ -199,6 +237,9 @@ class MainActivity : AppCompatActivity() {
         val setNumberStr = setNumberInput.text.toString()
         val repsStr = repsInput.text.toString()
         val weightStr = weightInput.text.toString()
+        val setComment = setCommentInput.text.toString()
+        val sessionComment = sessionCommentInput.text.toString()
+        val isSeconds = secondsToggle.isChecked
 
         if (exercise.isEmpty() || setNumberStr.isEmpty() || repsStr.isEmpty() || weightStr.isEmpty()) {
             Toast.makeText(this, "Bitte alle Felder ausfüllen!", Toast.LENGTH_SHORT).show()
@@ -215,7 +256,10 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        val oneRm = weight * (1 + reps / 30.0)
+        // Session-Kommentar in allen Einträgen der heutigen Datei aktualisieren
+        updateSessionCommentInFile(currentDate, sessionComment)
+
+        val oneRm = if (isSeconds) 0.0 else weight * (1 + reps / 30.0)
         val entry = JSONObject().apply {
             put("id", System.currentTimeMillis().toString())
             put("tag", currentDate)
@@ -225,19 +269,41 @@ class MainActivity : AppCompatActivity() {
             put("wiederholungen", reps)
             put("gewicht", weight)
             put("1RM", oneRm)
+            put("is_seconds", isSeconds)
+            put("kommentar", setComment)
+            put("session_kommentar", sessionComment)
         }
 
         saveToJsonFile(entry)
         
         setNumberInput.setText((setNumberStr.toInt() + 1).toString())
         repsInput.text?.clear()
+        setCommentInput.text?.clear()
         
-        oneRmResult.text = String.format(Locale.getDefault(), "1RM: %.2f kg", oneRm)
-        updateTrainingRanges(oneRm)
+        if (!isSeconds) {
+            oneRmResult.text = String.format(Locale.getDefault(), "1RM: %.2f kg", oneRm)
+            updateTrainingRanges(oneRm)
+        } else {
+            oneRmResult.text = "Statische Übung (Sekunden)"
+            trainingRanges.text = "Bereiche: N/A"
+        }
+        
         updateSessionStatus()
         updateExerciseAdapter()
         updateProgressionView(exercise)
         Toast.makeText(this, "Gespeichert!", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun updateSessionCommentInFile(date: String, comment: String) {
+        val file = File(filesDir, "workout_$date.json")
+        if (!file.exists()) return
+        try {
+            val arr = JSONArray(file.readText())
+            for (i in 0 until arr.length()) {
+                arr.getJSONObject(i).put("session_kommentar", comment)
+            }
+            file.writeText(arr.toString(4))
+        } catch (e: Exception) {}
     }
 
     private fun confirmDeleteSession(session: WorkoutSession) {
@@ -315,8 +381,13 @@ class MainActivity : AppCompatActivity() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_edit_set, null)
         val editReps = dialogView.findViewById<TextInputEditText>(R.id.editReps)
         val editWeight = dialogView.findViewById<TextInputEditText>(R.id.editWeight)
+        val editComment = dialogView.findViewById<TextInputEditText>(R.id.editComment)
+        val editIsSeconds = dialogView.findViewById<com.google.android.material.checkbox.MaterialCheckBox>(R.id.editIsSeconds)
+        
         editReps.setText(set.reps.toString())
         editWeight.setText(set.weight.toString())
+        editComment.setText(set.comment)
+        editIsSeconds.isChecked = set.isSeconds
 
         MaterialAlertDialogBuilder(this)
             .setTitle("Satz bearbeiten")
@@ -324,12 +395,14 @@ class MainActivity : AppCompatActivity() {
             .setPositiveButton("Speichern") { _, _ ->
                 val r = editReps.text.toString().toIntOrNull() ?: set.reps
                 val w = editWeight.text.toString().toDoubleOrNull() ?: set.weight
-                updateSetInFile(set, r, w)
+                val c = editComment.text.toString()
+                val s = editIsSeconds.isChecked
+                updateSetInFile(set, r, w, c, s)
             }
             .setNegativeButton("Abbrechen", null).show()
     }
 
-    private fun updateSetInFile(set: WorkoutSet, newReps: Int, newWeight: Double) {
+    private fun updateSetInFile(set: WorkoutSet, newReps: Int, newWeight: Double, newComment: String, isSeconds: Boolean) {
         val file = File(filesDir, set.originFileName)
         if (!file.exists()) return
         
@@ -349,7 +422,9 @@ class MainActivity : AppCompatActivity() {
                 if (id == set.id) {
                     obj.put("wiederholungen", newReps)
                     obj.put("gewicht", newWeight)
-                    obj.put("1RM", newWeight * (1 + newReps / 30.0))
+                    obj.put("kommentar", newComment)
+                    obj.put("is_seconds", isSeconds)
+                    obj.put("1RM", if (isSeconds) 0.0 else newWeight * (1 + newReps / 30.0))
                     found = true
                     break
                 }
@@ -426,6 +501,28 @@ class MainActivity : AppCompatActivity() {
         return false
     }
 
+    private fun updateWeightForExercise(ex: String) {
+        val files = filesDir.listFiles { _, name -> name.startsWith("workout_") }?.sortedByDescending { it.name }
+        files?.forEach { file ->
+            try {
+                val arr = JSONArray(file.readText())
+                // Search backwards in the session for the last set of this exercise
+                for (i in arr.length() - 1 downTo 0) {
+                    val obj = arr.getJSONObject(i)
+                    if (obj.getString("übung").equals(ex, ignoreCase = true)) {
+                        val weight = obj.optDouble("gewicht", 0.0)
+                        if (weight > 0) {
+                            weightInput.setText(weight.toString())
+                            val isSec = obj.optBoolean("is_seconds", false)
+                            secondsToggle.isChecked = isSec
+                            return
+                        }
+                    }
+                }
+            } catch (e: Exception) {}
+        }
+    }
+
     private fun updateSetNumberForExercise(ex: String) {
         val file = File(filesDir, getTodayFileName())
         var max = 0
@@ -499,6 +596,9 @@ class MainActivity : AppCompatActivity() {
             exerciseDropdown.text.clear()
             repsInput.text?.clear()
             weightInput.text?.clear()
+            setCommentInput.text?.clear()
+            sessionCommentInput.text?.clear()
+            secondsToggle.isChecked = false
             setNumberInput.setText("1")
             oneRmResult.text = "1RM: -"
             trainingRanges.text = "Bereiche: -"

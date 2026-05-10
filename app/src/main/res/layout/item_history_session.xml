@@ -54,6 +54,15 @@
 
         </RelativeLayout>
 
+        <TextView
+            android:id="@+id/sessionComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textColor="@color/secondary"
+            android:visibility="gone" />
+
         <LinearLayout
             android:id="@+id/setsContainer"
             android:layout_width="match_parent"

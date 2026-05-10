@@ -5,14 +5,28 @@
     android:orientation="horizontal"
     android:padding="8dp">
 
-    <TextView
-        android:id="@+id/exerciseName"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Bankdrücken"
-        android:textAppearance="?attr/textAppearanceBodyMedium"
-        android:textColor="@color/white" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/exerciseName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bankdrücken"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/setComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceLabelSmall"
+            android:textColor="@color/secondary"
+            android:visibility="gone" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/setDetails"

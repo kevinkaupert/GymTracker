@@ -21,6 +21,7 @@ class HistoryAdapter(
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val sessionDate: TextView = view.findViewById(R.id.sessionDate)
+        val sessionComment: TextView = view.findViewById(R.id.sessionComment)
         val setsContainer: LinearLayout = view.findViewById(R.id.setsContainer)
         val deleteSessionButton: ImageButton = view.findViewById(R.id.deleteSessionButton)
         val expandArrow: View = view.findViewById(R.id.expandArrow)
@@ -36,6 +37,13 @@ class HistoryAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val session = sessions[position]
         holder.sessionDate.text = "Training: ${session.date}"
+        
+        if (session.comment.isNotEmpty()) {
+            holder.sessionComment.text = session.comment
+            holder.sessionComment.visibility = View.VISIBLE
+        } else {
+            holder.sessionComment.visibility = View.GONE
+        }
         
         val isExpanded = expandedDates.contains(session.date)
         holder.setsContainer.visibility = if (isExpanded) View.VISIBLE else View.GONE
@@ -62,8 +70,20 @@ class HistoryAdapter(
                     .inflate(R.layout.item_history_set, holder.setsContainer, false)
                 
                 setView.findViewById<TextView>(R.id.exerciseName).text = set.exercise
+                val unit = if (set.isSeconds) "Sek." else "x"
+                val weightInfo = if (set.weight > 0) "${set.weight}kg" else "Eigengewicht"
+                val oneRmInfo = if (set.isSeconds) "" else " (1RM: ${String.format(Locale.getDefault(), "%.1f", set.oneRm)})"
+                
                 setView.findViewById<TextView>(R.id.setDetails).text = 
-                    "Satz ${set.setNumber}: ${set.reps} x ${set.weight}kg (1RM: ${String.format(Locale.getDefault(), "%.1f", set.oneRm)})"
+                    "Satz ${set.setNumber}: ${set.reps} $unit $weightInfo$oneRmInfo"
+
+                val commentView = setView.findViewById<TextView>(R.id.setComment)
+                if (set.comment.isNotEmpty()) {
+                    commentView.text = set.comment
+                    commentView.visibility = View.VISIBLE
+                } else {
+                    commentView.visibility = View.GONE
+                }
                 
                 setView.findViewById<ImageButton>(R.id.editSetButton).setOnClickListener {
                     onEditSet(set)
