@@ -49,6 +49,15 @@
                     android:textAppearance="?attr/textAppearanceBodySmall"
                     android:textColor="@color/secondary"
                     android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/sessionComment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:textColor="@color/primary"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
