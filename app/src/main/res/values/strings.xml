@@ -4,7 +4,10 @@
     <string name="exercise_hint">Exercise (e.g., Bench Press)</string>
     <string name="set_number_hint">Set</string>
     <string name="reps_hint">Reps</string>
+    <string name="time_hint">Sec</string>
     <string name="weight_hint">kg</string>
+    <string name="timed_label">Time-based</string>
+    <string name="workout_note_hint">Workout Note (optional)</string>
     <string name="save_button">Save</string>
     <string name="fill_fields_error">Please fill in all fields!</string>
     <string name="saved_success">Saved!</string>
@@ -16,6 +19,7 @@
     <string name="unit_kg_short">kg</string>
 
     <string name="nav_input">Input</string>
+    <string name="nav_notes">Notes</string>
     <string name="nav_history">History</string>
     <string name="nav_analyze">Analyze</string>
     <string name="nav_settings">Settings</string>
@@ -42,6 +46,9 @@
 
     <string name="export_all_btn">Export all data (Backup)</string>
     <string name="export_today_btn">Export today\'s workout</string>
+    <string name="migrate_all_btn">Batch Migrate Legacy Data</string>
+    <string name="migrate_success">Successfully migrated %d files!</string>
+    <string name="migrate_already_up_to_date">All files are already in the new format.</string>
 
     <string name="deviation_title">Large Deviation</string>
     <string name="deviation_message">This set (%.1f %s) deviates significantly from your last training (%.1f %s). Save anyway?</string>
@@ -85,4 +92,67 @@
     <string name="last_basis_wdh">Last Basis (Reps): %.1f</string>
     <string name="current_1rm">1RM: %.2f kg</string>
     <string name="current_basis_wdh">Basis (Reps): %.1f</string>
+    <string name="nav_exercises">Exercises</string>
+    <string name="exercise_master_title">Exercise Master Data</string>
+    <string name="search_exercises">Search exercises...</string>
+    <string name="add_exercise_title">Add Exercise</string>
+    <string name="exercise_name_hint">Exercise Name</string>
+    <string name="category_hint">Category (Push, Pull, Legs...)</string>
+    <string name="primary_muscles_hint">Primary Muscle Groups</string>
+    <string name="add_custom_muscle">Add custom muscle...</string>
+    <string name="muscle_chest">Chest</string>
+    <string name="muscle_back">Back</string>
+    <string name="muscle_shoulders">Shoulders</string>
+    <string name="muscle_biceps">Biceps</string>
+    <string name="muscle_triceps">Triceps</string>
+    <string name="muscle_quads">Quads</string>
+    <string name="muscle_hamstrings">Hamstrings</string>
+    <string name="muscle_calves">Calves</string>
+    <string name="muscle_abs">Abs</string>
+    <string name="muscle_glutes">Glutes</string>
+    <string name="muscle_forearms">Forearms</string>
+    <string name="muscle_traps">Traps</string>
+    <string name="muscle_lower_back">Lower Back</string>
+    <string name="plus_sign">+</string>
+    <string name="secondary_muscles_hint">Secondary Muscle Groups</string>
+    <string name="equipment_hint">Equipment</string>
+    <string name="tracking_type_hint">Tracking Type</string>
+    <string name="bodyweight_yn">Is Bodyweight?</string>
+    <string name="default_sets_hint">Default Sets</string>
+    <string name="default_reps_hint">Default Reps</string>
+    <string name="exercise_notes_hint">Execution Notes</string>
+
+    <string name="tracking_weight_reps">Weight + Reps</string>
+    <string name="tracking_bodyweight_reps">Bodyweight + Reps</string>
+    <string name="tracking_duration">Duration</string>
+    <string name="tracking_distance_time">Distance + Time</string>
+
+    <string name="category_push">Push</string>
+    <string name="category_pull">Pull</string>
+    <string name="category_legs">Legs</string>
+    <string name="category_core">Core</string>
+    <string name="category_grip">Grip</string>
+    <string name="category_cardio">Cardio</string>
+
+    <string name="equipment_barbell">Barbell</string>
+    <string name="equipment_dumbbell">Dumbbell</string>
+    <string name="equipment_cable">Cable</string>
+    <string name="equipment_machine">Machine</string>
+    <string name="equipment_bodyweight">Bodyweight</string>
+
+    <string name="error_exercise_name_empty">Exercise name cannot be empty</string>
+    <string name="success_exercise_saved">Exercise saved</string>
+    <string name="error_exercise_not_in_master">\"%s\" is not in your Exercise Master Data. Would you like to add it now or save anyway?</string>
+    <string name="sync_exercises_btn">Import exercises from history</string>
+    <string name="sync_exercises_success">Added %d new exercises from your history!</string>
+    <string name="sync_exercises_no_new">No new exercises found in history.</string>
+    <string name="gdrive_backup_btn">Backup to Google Drive (Single File)</string>
+    <string name="export_git_btn">Export to Folder (Git-friendly)</string>
+    <string name="restore_backup_btn">Restore from Backup</string>
+    <string name="export_success">Export successful: %d files copied.</string>
+    <string name="export_error">Export failed: %s</string>
+    <string name="restore_success">Restore successful: %1$d sessions and %2$d exercises imported.</string>
+    <string name="restore_error">Restore failed: %s</string>
+    <string name="restore_confirm_title">Restore Backup?</string>
+    <string name="restore_confirm_message">This will add the data from the backup to your current data. Duplicate sessions will be merged or skipped. Proceed?</string>
 </resources>

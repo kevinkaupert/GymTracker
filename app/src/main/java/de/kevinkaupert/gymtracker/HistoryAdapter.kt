@@ -26,6 +26,7 @@ class HistoryAdapter(
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val sessionDate: TextView = view.findViewById(R.id.sessionDate)
         val sessionSummary: TextView = view.findViewById(R.id.sessionSummary)
+        val sessionNote: TextView = view.findViewById(R.id.sessionNote)
         val setsContainer: LinearLayout = view.findViewById(R.id.setsContainer)
         val exportSessionButton: ImageButton = view.findViewById(R.id.exportSessionButton)
         val expandArrow: View = view.findViewById(R.id.expandArrow)
@@ -54,6 +55,13 @@ class HistoryAdapter(
         val totalVolume = session.sets.sumOf { it.volume }
         val context = holder.itemView.context
         holder.sessionSummary.text = context.getString(R.string.session_summary_format, totalSets, totalVolume)
+
+        if (session.note.isNotEmpty()) {
+            holder.sessionNote.text = session.note
+            holder.sessionNote.visibility = View.VISIBLE
+        } else {
+            holder.sessionNote.visibility = View.GONE
+        }
         
         val isExpanded = expandedDates.contains(session.date)
         holder.setsContainer.visibility = if (isExpanded) View.VISIBLE else View.GONE
@@ -85,11 +93,13 @@ class HistoryAdapter(
                 
                 setView.findViewById<TextView>(R.id.exerciseName).text = set.exercise
                 
-                // Neue saubere Aufteilung in Spalten
-                setView.findViewById<TextView>(R.id.repsValue).text = "${set.reps}"
+                // Show "s" for timed exercises
+                val reps = if (set.isTimed) set.durationSeconds else set.reps
+                val repsText = if (set.isTimed) "${reps}${context.getString(R.string.time_hint)}" else "${reps}"
+                setView.findViewById<TextView>(R.id.repsValue).text = repsText
                 
-                val context = holder.itemView.context
-                val weightDisplay = if (set.isBodyweight) context.getString(R.string.bodyweight_short) else String.format(Locale.getDefault(), "%.1f%s", set.weight, context.getString(R.string.unit_kg_short))
+                val weight = set.weightKg ?: 0.0
+                val weightDisplay = if (set.isBodyweight) context.getString(R.string.bodyweight_short) else String.format(Locale.getDefault(), "%.1f%s", weight, context.getString(R.string.unit_kg_short))
                 setView.findViewById<TextView>(R.id.weightValue).text = weightDisplay
                 
                 setView.findViewById<TextView>(R.id.oneRmValue).text = 
