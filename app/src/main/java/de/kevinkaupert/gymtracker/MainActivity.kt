@@ -938,6 +938,7 @@ class MainActivity : AppCompatActivity() {
         updateTrainingRanges(oneRm, isBodyweight, isTimed, weight)
         updateSessionStatus()
         updateExerciseAdapters()
+        refreshAnalyzeView()
         Toast.makeText(this, R.string.saved_success, Toast.LENGTH_SHORT).show()
     }
 
@@ -1021,10 +1022,11 @@ class MainActivity : AppCompatActivity() {
                 if (obj.has("exercises")) {
                     // Hierarchical format - flatten for legacy reading/count
                     val allSets = JSONArray()
+                    val sessionDate = obj.optString("date", "")
                     val exercises = obj.getJSONArray("exercises")
                     for (i in 0 until exercises.length()) {
                         val ex = exercises.getJSONObject(i)
-                        val setsArr = ex.getJSONArray("sets")
+                        val setsArr = ex.optJSONArray("sets") ?: continue
                         for (j in 0 until setsArr.length()) {
                             val s = setsArr.getJSONObject(j)
                             val combined = JSONObject(s.toString())
@@ -1033,12 +1035,21 @@ class MainActivity : AppCompatActivity() {
                             combined.put("trackingType", ex.optString("trackingType", TrackingType.WEIGHT_REPS.name))
                             combined.put("primaryMuscleGroups", ex.optJSONArray("primaryMuscleGroups"))
                             combined.put("secondaryMuscleGroups", ex.optJSONArray("secondaryMuscleGroups"))
+                            if (sessionDate.isNotEmpty()) combined.put("date", sessionDate)
                             allSets.put(combined)
                         }
                     }
                     Pair(obj.optString("notes", ""), allSets)
                 } else if (obj.has("sets")) {
-                    Pair(obj.optString("note", obj.optString("notes", "")), obj.optJSONArray("sets") ?: JSONArray())
+                    val sets = obj.optJSONArray("sets") ?: JSONArray()
+                    val topEx = obj.optString("übung", obj.optString("exercise", ""))
+                    if (topEx.isNotEmpty()) {
+                        for (k in 0 until sets.length()) {
+                            val s = sets.optJSONObject(k) ?: continue
+                            if (!s.has("übung")) s.put("übung", topEx)
+                        }
+                    }
+                    Pair(obj.optString("note", obj.optString("notes", "")), sets)
                 } else if (obj.has("übung") || obj.has("exercise") || obj.has("satz")) {
                     // Single set object at top level
                     Pair("", JSONArray().apply { put(obj) })
@@ -1157,8 +1168,9 @@ class MainActivity : AppCompatActivity() {
             loadHistory()
             updateSessionStatus()
             refreshAnalyzeView()
-            Toast.makeText(this, getString(R.string.saved_success), Toast.LENGTH_SHORT).show()
-        } catch (_: Exception) {}
+        } catch (e: Exception) {
+            Log.e("GymTracker", "Error deleting set", e)
+        }
     }
 
     private fun editSet(set: WorkoutSet) {
@@ -1291,8 +1303,9 @@ class MainActivity : AppCompatActivity() {
             try {
                 val (_, arr) = readWorkoutFile(file)
                 for (i in 0 until arr.length()) {
-                    val ex = arr.getJSONObject(i).getString("übung")
-                    if (!exercises.contains(ex)) exercises.add(ex)
+                    val exObj = arr.optJSONObject(i) ?: continue
+                    val ex = exObj.optString("übung", "").trim()
+                    if (ex.isNotEmpty() && !exercises.contains(ex)) exercises.add(ex)
                 }
             } catch (_: Exception) {}
         }
@@ -1311,12 +1324,15 @@ class MainActivity : AppCompatActivity() {
 
                 for (i in 0 until jsonArray.length()) {
                     val obj = jsonArray.optJSONObject(i) ?: continue
-                    val ex = obj.optString("übung", obj.optString("name", obj.optString("exercise", "")))
+                    val ex = obj.optString("übung", obj.optString("name", obj.optString("exercise", ""))).trim()
                     
                     if (ex.equals(trimmedEx, ignoreCase = true)) {
                         val date = obj.optString("date", obj.optString("tag", dateFromFilename))
                         val isBW = obj.optBoolean("isBodyweight", false)
-                        val isT = obj.optBoolean("isTimed", obj.optString("trackingType") == TrackingType.DURATION.name)
+                        val trackingTypeStr = obj.optString("trackingType", "")
+                        val isT = trackingTypeStr == TrackingType.DURATION.name || 
+                                 trackingTypeStr == TrackingType.DISTANCE_TIME.name || 
+                                 obj.optBoolean("isTimed", false)
                         
                         val weight = obj.optDouble("weightKg", obj.optDouble("gewicht", obj.optDouble("weight", 0.0)))
                         val reps = obj.optInt("reps", obj.optInt("wiederholungen", obj.optInt("durationSeconds", 0)))

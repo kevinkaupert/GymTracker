@@ -149,7 +149,7 @@ class ProgressionGraphView @JvmOverloads constructor(
             var firstPoint = true
 
             dates.forEachIndexed { dateIndex, date ->
-                val x = if (dates.size > 1) left + dateIndex * xStep else left + 50f
+                val x = if (dates.size > 1) left + dateIndex * xStep else left + xStep
                 val sessionMax = sessionMax1RMs[date] ?: 0.0
                 
                 val zStartVal = sessionMax * config.first
@@ -169,7 +169,7 @@ class ProgressionGraphView @JvmOverloads constructor(
 
             // Path back to close the polygon
             for (i in dates.size - 1 downTo 0) {
-                val x = if (dates.size > 1) left + i * xStep else left + 50f
+                val x = if (dates.size > 1) left + i * xStep else left + xStep
                 val sessionMax = sessionMax1RMs[dates[i]] ?: 0.0
                 val zStartVal = sessionMax * config.first
                 val yBottom = top + height - ((zStartVal - minVal) / range * height).toFloat()
@@ -185,11 +185,12 @@ class ProgressionGraphView @JvmOverloads constructor(
             if (dates.isNotEmpty()) {
                 val lastDate = dates.last()
                 val lastMax = sessionMax1RMs[lastDate] ?: 0.0
+                val labelX = if (dates.size > 1) left + (dates.size - 1) * xStep - 10f else left + xStep - 10f
                 val labelY = top + height - ((lastMax * (config.first + config.second) / 2.0 - minVal) / range * height).toFloat()
-            zoneTextPaint.color = config.third
-            zoneTextPaint.alpha = 200
-            zoneTextPaint.typeface = android.graphics.Typeface.MONOSPACE
-            canvas.drawText(zoneLabels[zoneIndex], left + (dates.size - 1) * xStep - 10f, labelY, zoneTextPaint)
+                zoneTextPaint.color = config.third
+                zoneTextPaint.alpha = 200
+                zoneTextPaint.typeface = android.graphics.Typeface.MONOSPACE
+                canvas.drawText(zoneLabels[zoneIndex], labelX, labelY, zoneTextPaint)
             }
         }
     }
